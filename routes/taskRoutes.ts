@@ -233,7 +233,7 @@ taskRoute.get("/analytics/tasks",authenticate,async (req:Request,res:Response)=>
 taskRoute.post("/predictPriority",authenticate,async (req:Request,res:Response)=>{
     try {
         const priority = await getPriority(req.body.description)
-        res.send(priority)
+        res.json({priority:priority})
     } catch (err:any) {
         res.send(err.message)
     }
@@ -264,7 +264,7 @@ taskRoute.post("/predictPriority",authenticate,async (req:Request,res:Response)=
 taskRoute.post("/summary",authenticate,async (req:Request,res:Response)=>{
     try {
         const summary = await getSummary(req.body.description)
-        res.send(summary)
+        res.json({summary:summary})
     } catch (err:any) {
         res.send(err.message)
     }
