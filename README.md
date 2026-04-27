@@ -31,7 +31,7 @@ A backend API built using **Node.js, Express, TypeScript, and MongoDB** for mana
 ### 1. Clone the repository
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/Vedan8/SmartTaskManagement.git
 cd smart_task_management_system
 ```
 
@@ -53,6 +53,7 @@ Create a `.env` file in the root directory:
 PORT=5000
 URI=your_mongodb_connection_string
 JWT_SECRET=your_secret_key
+TOKEN=token_key_name
 ```
 
 ---
@@ -101,8 +102,7 @@ POST /auth/register
 
 ```json
 {
-  "name": "John",
-  "email": "john@example.com",
+  "username": "John",
   "password": "123456"
 }
 ```
@@ -125,7 +125,7 @@ POST /auth/login
 
 ```json
 {
-  "email": "john@example.com",
+  "username": "John",
   "password": "123456"
 }
 ```
