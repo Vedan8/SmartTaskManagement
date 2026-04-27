@@ -4,6 +4,9 @@ import dotenv from "dotenv"
 import { userRoute } from "./routes/userRoutes";
 import { taskRoute } from "./routes/taskRoutes";
 import cors from "cors";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./config/swagger";
+
 
 dotenv.config();
 const PORT=process.env.PORT
@@ -18,6 +21,7 @@ async function start() {
   app.use(express.urlencoded({ extended: true }));
   app.use(userRoute)
   app.use(taskRoute)
+  app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
   app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);

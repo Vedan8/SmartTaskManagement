@@ -5,6 +5,24 @@ import { validateUser,authenticate,isAdmin } from "../middleware/userMiddleware"
 
 const userRoute = Router();
 
+
+/**
+ * @swagger
+ * /auth/register:
+ *   post:
+ *     summary: Register a new user
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [username, password]
+ *             properties:
+ *                username: { type: string, example: username }
+ *                password: { type: string, example: password }
+ */
 userRoute.post("/auth/register",validateUser, async (req: Request, res: Response) => {
   try {
     await signUpController(req.body);
@@ -15,6 +33,20 @@ userRoute.post("/auth/register",validateUser, async (req: Request, res: Response
   }
 });
 
+
+
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     summary: Get all users (Admin only)
+ *     tags: [Users]
+ *     security:
+ *       - tokenAuth: []
+ *     responses:
+ *       200:
+ *         description: List of users
+ */
 userRoute.get("/users",authenticate,isAdmin, async (req: Request, res: Response) => {
   try {
     const data = await getUserController();
@@ -25,6 +57,20 @@ userRoute.get("/users",authenticate,isAdmin, async (req: Request, res: Response)
   }
 });
 
+
+
+/**
+ * @swagger
+ * /users/profile:
+ *   get:
+ *     summary: Get logged-in user profile
+ *     tags: [Users]
+ *     security:
+ *       - tokenAuth: []
+ *     responses:
+ *       200:
+ *         description: User profile
+ */
 userRoute.get("/users/profile",authenticate, async (req: Request, res: Response) => {
   try {
     const user = await getProfileController((req as any).user);
@@ -35,6 +81,30 @@ userRoute.get("/users/profile",authenticate, async (req: Request, res: Response)
   }
 });
 
+
+
+/**
+ * @swagger
+ * /users/profile:
+ *   put:
+ *     summary: Update user profile
+ *     tags: [Users]
+ *     security:
+ *       - tokenAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [username, password]
+ *             properties:
+ *                username: { type: string, example: username }
+ *                password: { type: string, example: password }
+ *     responses:
+ *       200:
+ *         description: User Updated
+ */
 userRoute.put("/users/profile",authenticate,validateUser, async (req: Request, res: Response) => {
   try {
     await updateProfileController(req.body,(req as any).user);
@@ -45,6 +115,27 @@ userRoute.put("/users/profile",authenticate,validateUser, async (req: Request, r
   }
 });
 
+
+/**
+ * @swagger
+ * /auth/login:
+ *   post:
+ *     summary: Login user
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [username, password]
+ *             properties:
+ *                username: { type: string, example: username }
+ *                password: { type: string, example: password }
+ *     responses:
+ *       200:
+ *         description: Returns JWT token
+ */
 userRoute.post("/auth/login",validateUser, async (req: Request, res: Response) => {
   try {
     const response=await loginController(req.body)
