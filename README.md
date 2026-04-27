@@ -80,7 +80,7 @@ npm start
 * Pass token in headers:
 
 ```bash
-Authorization: Bearer <your_token>
+token: <your_token>
 ```
 
 ---
