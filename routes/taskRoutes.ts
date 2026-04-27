@@ -2,7 +2,7 @@ import { Router } from "express";
 import type { Request, Response } from "express";
 import { authenticate,isAdmin } from "../middleware/userMiddleware";
 import { validateTask,validateOwner } from "../middleware/taskMiddleware";
-import { analyzeTaskController, createTaskController,deleteTaskController,getTaskByIdController,getTaskController, updateTaskController, getAllTaskController } from "../controllers/taskController";
+import { analyzeTaskController, createTaskController,deleteTaskController,getTaskByIdController,getTaskController, updateTaskController, getAllTaskController, getPriority, getSummary } from "../controllers/taskController";
 
 const taskRoute = Router();
 
@@ -203,6 +203,68 @@ taskRoute.get("/analytics/tasks",authenticate,async (req:Request,res:Response)=>
     try {
         const task = await analyzeTaskController((req as any).user)
         res.send(task)
+    } catch (err:any) {
+        res.send(err.message)
+    }
+})
+
+
+/**
+ * @swagger
+ * /predictPriority:
+ *   post:
+ *     summary: Predict Priority
+ *     tags: [Ai]
+ *     security:
+ *       - tokenAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [description]
+ *             properties:
+ *                description: { type: string, example: Task description }
+ *     responses:
+ *       200:
+ *         description: Predict Priority
+ */
+taskRoute.post("/predictPriority",authenticate,async (req:Request,res:Response)=>{
+    try {
+        const priority = await getPriority(req.body.description)
+        res.send(priority)
+    } catch (err:any) {
+        res.send(err.message)
+    }
+})
+
+
+/**
+ * @swagger
+ * /summary:
+ *   post:
+ *     summary: Generate Summary
+ *     tags: [Ai]
+ *     security:
+ *       - tokenAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [description]
+ *             properties:
+ *                description: { type: string, example: Task description }
+ *     responses:
+ *       200:
+ *         description: Generate Summary
+ */
+taskRoute.post("/summary",authenticate,async (req:Request,res:Response)=>{
+    try {
+        const summary = await getSummary(req.body.description)
+        res.send(summary)
     } catch (err:any) {
         res.send(err.message)
     }

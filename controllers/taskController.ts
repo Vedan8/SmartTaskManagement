@@ -1,5 +1,6 @@
 import { Task } from "../models/taskModel";
 import { analyzeTask, createTask,deleteTask,getTask, getTaskById, updateTask, getAllTask } from "../services/taskServices";
+import { generateSummary, suggestPriority } from "../utils/aifeatures";
 
 async function createTaskController(Task:Task,User:any) {
     await createTask(Task,User)
@@ -28,4 +29,13 @@ async function analyzeTaskController(User:any) {
 async function getAllTaskController() {
     return await getAllTask()
 }
-export {createTaskController,getTaskController,getTaskByIdController,updateTaskController,deleteTaskController,analyzeTaskController,getAllTaskController}
+
+async function getPriority(description: string) {
+    return await suggestPriority(description)
+}
+
+async function getSummary(description: string) {
+    return await generateSummary(description)
+}
+
+export {createTaskController,getTaskController,getTaskByIdController,updateTaskController,deleteTaskController,analyzeTaskController,getAllTaskController,getPriority,getSummary}

@@ -1,6 +1,7 @@
+import dotenv from "dotenv"
+dotenv.config();
 import express from "express"
 import dbConnect from "./config/dbConnect"
-import dotenv from "dotenv"
 import { userRoute } from "./routes/userRoutes";
 import { taskRoute } from "./routes/taskRoutes";
 import cors from "cors";
@@ -8,7 +9,6 @@ import swaggerUi from "swagger-ui-express";
 import { swaggerSpec } from "./config/swagger";
 
 
-dotenv.config();
 const PORT=process.env.PORT
 const URI=process.env.URI!
 
