@@ -51,6 +51,8 @@ async function updateTask(data:Task,id:any){
         task.description=data.description
         task.status=data.status
         task.priority=data.priority
+        console.log(task.user)
+        task.user=task.user
         task.save()
     } catch (error:any) {
         throw new Error(error.message)

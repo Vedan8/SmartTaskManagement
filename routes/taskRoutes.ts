@@ -69,7 +69,7 @@ taskRoute.get("/tasks",authenticate,async (req:Request,res:Response)=>{
  * /alltask:
  *   get:
  *     summary: Get all tasks (Admin only)
- *     tags: [Tasks]
+ *     tags: [Admin]
  *     security:
  *       - tokenAuth: []
  *     responses:
@@ -119,7 +119,7 @@ taskRoute.get("/tasks/:id",authenticate,async (req:Request,res:Response)=>{
 /**
  * @swagger
  * /tasks/{id}:
- *   patch:
+ *   put:
  *     summary: Update task
  *     tags: [Tasks]
  *     security:
@@ -147,7 +147,7 @@ taskRoute.get("/tasks/:id",authenticate,async (req:Request,res:Response)=>{
  *       200:
  *         description: Task Updated
  */
-taskRoute.patch("/tasks/:id",authenticate,validateTask,validateOwner,async (req:Request,res:Response)=>{
+taskRoute.put("/tasks/:id",authenticate,validateTask,validateOwner,async (req:Request,res:Response)=>{
     try {
         const id=req.params.id
         await updateTaskController(req.body,id)

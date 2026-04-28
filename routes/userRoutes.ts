@@ -40,7 +40,7 @@ userRoute.post("/auth/register",validateUser, async (req: Request, res: Response
  * /users:
  *   get:
  *     summary: Get all users (Admin only)
- *     tags: [Users]
+ *     tags: [Admin]
  *     security:
  *       - tokenAuth: []
  *     responses:
