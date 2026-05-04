@@ -53,7 +53,7 @@ async function updateTask(data:Task,id:any){
         task.priority=data.priority
         console.log(task.user)
         task.user=task.user
-        task.save()
+        await task.save()
     } catch (error:any) {
         throw new Error(error.message)
     }

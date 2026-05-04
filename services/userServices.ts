@@ -19,7 +19,7 @@ async function getUsers() {
 }
 
 async function getProfile(User:any) {
-    const user=await userModel.findById(User.id)
+    const user=await userModel.findById(User.id).select("-password")
     if (!user) {
         throw new Error("User not found");
     }
@@ -31,8 +31,8 @@ async function updateProfile(data:User,User:any) {
     if (!user) {
         throw new Error("User not found");
     }
-    user.username=data.username
-    user.password=await encryptPassword(data.password)
+    if (data.username) { user.username=data.username }
+    if (data.password) { user.password = await encryptPassword(data.password); }
     await user.save()
 }
 

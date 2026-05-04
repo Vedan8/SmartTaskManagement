@@ -26,6 +26,11 @@ const userSchema = z.object({
   password: z.string()
 });
 
+const UpdateUserSchema = z.object({
+  username: z.string().optional(),
+  password: z.string().optional()
+});
+
 type User= {
     username: string,
     password: string
@@ -36,4 +41,4 @@ type jwtUser = {
   role: string
 }
 
-export {userModel,User,userSchema,jwtUser}
+export {userModel,User,userSchema,jwtUser,UpdateUserSchema}

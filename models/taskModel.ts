@@ -35,6 +35,14 @@ const taskModel=mongoose.model('Task',Task)
 const taskSchema = z.object({
     title: z.string(),
     description: z.string(),
+    status: z.enum(["todo", "in-progress", "done"]),
+    priority: z.enum(["low", "medium", "high"]),
+    due_date:z.coerce.date(),
+});
+
+const UpdateTaskSchema = z.object({
+    title: z.string().optional(),
+    description: z.string().optional(),
     status: z.enum(["todo", "in-progress", "done"]).optional(),
     priority: z.enum(["low", "medium", "high"]).optional(),
     due_date:z.coerce.date().optional(),
@@ -49,4 +57,4 @@ type Task= {
     user: mongoose.Types.ObjectId
 }
 
-export {taskModel,Task,taskSchema}
+export {taskModel,Task,taskSchema,UpdateTaskSchema}

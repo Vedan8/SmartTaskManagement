@@ -1,7 +1,7 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
 import { authenticate,isAdmin } from "../middleware/userMiddleware";
-import { validateTask,validateOwner } from "../middleware/taskMiddleware";
+import { validateTask,validateOwner,validateUpdatedTask } from "../middleware/taskMiddleware";
 import { analyzeTaskController, createTaskController,deleteTaskController,getTaskByIdController,getTaskController, updateTaskController, getAllTaskController, getPriority, getSummary } from "../controllers/taskController";
 
 const taskRoute = Router();
@@ -35,9 +35,9 @@ const taskRoute = Router();
 taskRoute.post("/tasks",authenticate,validateTask,async (req:Request,res:Response)=>{
     try {
         await createTaskController(req.body,(req as any).user)
-        res.send("Task Created")
+        res.status(201).send("Task Created")
     } catch (err:any) {
-        res.send(err.message)
+        res.status(500).send(err.message)
     }
 })
 
@@ -57,9 +57,9 @@ taskRoute.post("/tasks",authenticate,validateTask,async (req:Request,res:Respons
 taskRoute.get("/tasks",authenticate,async (req:Request,res:Response)=>{
     try {
         const task = await getTaskController((req as any).user)
-        res.send(task)
+        res.status(200).send(task)
     } catch (err:any) {
-        res.send(err.message)
+        res.status(500).send(err.message)
     }
 })
 
@@ -79,9 +79,9 @@ taskRoute.get("/tasks",authenticate,async (req:Request,res:Response)=>{
 taskRoute.get("/alltask",authenticate,isAdmin,async (req:Request,res:Response)=>{
     try {
         const task = await getAllTaskController()
-        res.send(task)
+        res.status(200).send(task)
     } catch (err:any) {
-        res.send(err.message)
+        res.status(500).send(err.message)
     }
 })
 
@@ -108,9 +108,9 @@ taskRoute.get("/tasks/:id",authenticate,async (req:Request,res:Response)=>{
     try {
         const id=req.params.id
         const task = await getTaskByIdController(id)
-        res.send(task)
+        res.status(200).send(task)
     } catch (err:any) {
-        res.send(err.message)
+        res.status(500).send(err.message)
     }
 })
 
@@ -147,13 +147,13 @@ taskRoute.get("/tasks/:id",authenticate,async (req:Request,res:Response)=>{
  *       200:
  *         description: Task Updated
  */
-taskRoute.put("/tasks/:id",authenticate,validateTask,validateOwner,async (req:Request,res:Response)=>{
+taskRoute.put("/tasks/:id",authenticate,validateUpdatedTask,validateOwner,async (req:Request,res:Response)=>{
     try {
         const id=req.params.id
         await updateTaskController(req.body,id)
-        res.send("Task Updated")
+        res.status(200).send("Task Updated")
     } catch (err:any) {
-        res.send(err.message)
+        res.status(500).send(err.message)
     }
 })
 
@@ -180,9 +180,9 @@ taskRoute.delete("/tasks/:id",authenticate,validateOwner,async (req:Request,res:
     try {
         const id=req.params.id
         await deleteTaskController(id)
-        res.send("Task Deleted")
+        res.status(200).send("Task Deleted")
     } catch (err:any) {
-        res.send(err.message)
+        res.status(500).send(err.message)
     }
 })
 
@@ -202,9 +202,9 @@ taskRoute.delete("/tasks/:id",authenticate,validateOwner,async (req:Request,res:
 taskRoute.get("/analytics/tasks",authenticate,async (req:Request,res:Response)=>{
     try {
         const task = await analyzeTaskController((req as any).user)
-        res.send(task)
+        res.status(200).send(task)
     } catch (err:any) {
-        res.send(err.message)
+        res.status(500).send(err.message)
     }
 })
 
@@ -233,9 +233,9 @@ taskRoute.get("/analytics/tasks",authenticate,async (req:Request,res:Response)=>
 taskRoute.post("/predictPriority",authenticate,async (req:Request,res:Response)=>{
     try {
         const priority = await getPriority(req.body.description)
-        res.json({priority:priority})
+        res.status(200).json({priority:priority})
     } catch (err:any) {
-        res.send(err.message)
+        res.status(500).send(err.message)
     }
 })
 
@@ -264,9 +264,9 @@ taskRoute.post("/predictPriority",authenticate,async (req:Request,res:Response)=
 taskRoute.post("/summary",authenticate,async (req:Request,res:Response)=>{
     try {
         const summary = await getSummary(req.body.description)
-        res.json({summary:summary})
+        res.status(200).json({summary:summary})
     } catch (err:any) {
-        res.send(err.message)
+        res.status(500).send(err.message)
     }
 })
 
